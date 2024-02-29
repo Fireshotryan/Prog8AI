@@ -27,6 +27,7 @@ app.post('/motivate', async(req, res) => {
         const { prompt } = req.body;
 
         // prompt engineering
+        let engineeredprompt = prompt
 
         const response = await model.invoke(prompt);
         res.json({ message: response.content });
