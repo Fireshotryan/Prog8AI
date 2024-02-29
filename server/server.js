@@ -25,6 +25,9 @@ app.use(express.static(path.join(__dirname, '../client')));
 app.post('/motivate', async(req, res) => {
     try {
         const { prompt } = req.body;
+
+        // prompt engineering
+
         const response = await model.invoke(prompt);
         res.json({ message: response.content });
     } catch (error) {
