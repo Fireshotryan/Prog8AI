@@ -1,5 +1,3 @@
-// api.js
-
 const baseUrl = 'http://localhost:3000'; // Update with your server URL
 
 export async function getMotivated(prompt) {
