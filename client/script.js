@@ -1,7 +1,8 @@
 const promptInput = document.getElementById('prompt');
 const submitButton = document.getElementById('submit');
-const responseElement = document.getElementById('response');
+const loadingIndicator = document.getElementById('loading-indicator');
 const chatHistoryElement = document.getElementById('chat-history');
+const responseElement = document.getElementById('response');
 
 let canSubmit = true; // Flag to track if a question can be submitted
 
@@ -11,15 +12,15 @@ submitButton.addEventListener('click', async () => {
     const prompt = promptInput.value.trim();
 
     if (prompt !== '') {
-        // Disable the submit button to prevent spamming
-        submitButton.disabled = true;
-        canSubmit = false; // Set the flag to false
+        // Hide the submit button and display the loading indicator
+        submitButton.style.display = 'none';
+        loadingIndicator.style.display = 'block';
 
-        // Display user question immediately in the chat history
-        const userQuestion = document.createElement('div');
-        userQuestion.classList.add('message', 'user-message');
-        userQuestion.textContent = `You: ${prompt}`;
-        chatHistoryElement.appendChild(userQuestion);
+        // Display user prompt in the chat history
+        const userPrompt = document.createElement('div');
+        userPrompt.classList.add('message', 'user-message');
+        userPrompt.textContent = `You: ${prompt}`;
+        chatHistoryElement.appendChild(userPrompt);
 
         // Clear the input field
         promptInput.value = '';
@@ -42,15 +43,16 @@ submitButton.addEventListener('click', async () => {
         aiResponse.textContent = `AI: ${data.message}`;
         chatHistoryElement.appendChild(aiResponse);
 
+        // Display AI response in the response box
+        responseElement.textContent = data.message;
+
         // Scroll to the bottom of the chat history
         chatHistoryElement.scrollTop = chatHistoryElement.scrollHeight;
 
-        responseElement.textContent = data.message;
-        responseElement.style.display = 'block'; // Show the response
-
-        // Set a cooldown period before allowing the user to submit another question
+        // Enable the submit button and hide the loading indicator after a delay
         setTimeout(() => {
-            submitButton.disabled = false;
+            submitButton.style.display = 'block';
+            loadingIndicator.style.display = 'none';
             canSubmit = true; // Set the flag to true
         }, 5000); // 5-second cooldown period
     } else {

@@ -1,27 +1,32 @@
-body {
-    font-family: Arial, sans-serif;
+/* style.css */
+
+/* Reset default styles */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* Ensure page takes at least the height of the viewport */
     background-color: #f4f4f4;
 }
 
 .container {
     text-align: center;
-    margin-bottom: 20px;
-    /* Add margin to the bottom of the container */
+    margin-bottom: 20px; /* Add margin to the bottom of the container */
 }
 
-.textinput,
-.buttonsubmit {
-    margin-top: 20px;
-    /* Add margin to the top of the input/button section */
-    margin-bottom: 20px;
-    /* Add margin to the bottom of the input/button section */
+.input-container {
+    position: relative; /* Position relative to contain the loading indicator */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px; /* Add margin to the bottom of the input/button section */
 }
 
 .input-field {
@@ -31,11 +36,9 @@ body {
     border-radius: 5px;
     width: 300px;
     box-sizing: border-box;
-    margin-bottom: 10px;
-    /* Add space between input field and button */
 }
 
-button {
+.submit-button {
     padding: 12px 24px;
     font-size: 16px;
     background-color: #4CAF50;
@@ -46,14 +49,25 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.submit-button:hover {
     background-color: #45a049;
+}
+
+.loading-indicator {
+    position: absolute; /* Position absolute to overlay the button */
+    display: none; /* Initially hide the loading indicator */
+    width: 50px;
+    height: 50px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 400px; /* Add margin between the button and the loading indicator */
 }
 
 .response {
     margin-top: 20px;
-    margin-bottom: 20px;
-    /* Add margin to the bottom of the chat history */
+    margin-bottom: 20px; /* Add margin to the bottom of the chat history */
     padding: 20px;
     background-color: #f1f1f1;
     border-radius: 5px;
@@ -62,28 +76,45 @@ button:hover {
     font-weight: bold;
 }
 
+.latest-response-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
 .chat-history {
     display: flex;
     flex-direction: column-reverse;
-    /* Reverse order so new messages appear at the bottom */
     align-items: flex-start;
+    border: 2px solid #ccc; /* Add border */
+    border-radius: 10px; /* Add border radius */
+    padding: 10px; /* Add padding */
+    max-height: 300px; /* Set maximum height */
+    overflow-y: auto; /* Add scrollbar for overflow */
+    background-color: #f9f9f9; /* Background color */
 }
 
+/* Style individual messages */
 .message {
-    padding: 10px;
-    margin-bottom: 5px;
-    border-radius: 5px;
-    max-width: 70%;
+    padding: 10px; /* Adjust padding */
+    margin: 5px 0; /* Adjust margin */
+    border-radius: 10px;
+    max-width: 80%;
 }
 
 .user-message {
     background-color: #007bff;
     color: white;
     align-self: flex-end;
-    /* Align user's message to the right */
 }
 
 .ai-message {
     background-color: #f1f1f1;
     color: black;
+}
+
+/* Animation for loading indicator */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

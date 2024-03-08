@@ -9,13 +9,14 @@
 
 <body>
     <div class="container">
-        <div class="textinput">
+        <div class="input-container">
             <input id="prompt" class="input-field" type="text" placeholder="Enter your question">
+            <button id="submit" class="submit-button">Get Motivated!</button>
+            <div id="loading-indicator" class="loading-indicator"></div>
         </div>
-        <div class="buttonsubmit">
-            <button id="submit">Get Motivated!</button>
-        </div>
+        <div class="latest-response-title">Latest Response:
         <div class="response" id="response"></div>
+    </div>
         <div class="chat-history" id="chat-history"></div>
     </div>
     <script defer src="./script.js" type="module"></script>
