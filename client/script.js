@@ -5,7 +5,7 @@ const chatHistoryElement = document.getElementById('chat-history');
 
 let canSubmit = true; // Flag to track if a question can be submitted
 
-submitButton.addEventListener('click', async() => {
+submitButton.addEventListener('click', async () => {
     if (!canSubmit) return; // Prevent submitting if the flag is false
 
     const prompt = promptInput.value.trim();
@@ -23,12 +23,6 @@ submitButton.addEventListener('click', async() => {
 
         // Clear the input field
         promptInput.value = '';
-
-        // Re-enable the submit button after a delay
-        setTimeout(() => {
-            submitButton.disabled = false;
-            canSubmit = true; // Set the flag to true
-        }, 3000); // 3-second delay
 
         // Send a request to the server to get the response
         const response = await fetch('/motivate', {
@@ -53,6 +47,12 @@ submitButton.addEventListener('click', async() => {
 
         responseElement.textContent = data.message;
         responseElement.style.display = 'block'; // Show the response
+
+        // Set a cooldown period before allowing the user to submit another question
+        setTimeout(() => {
+            submitButton.disabled = false;
+            canSubmit = true; // Set the flag to true
+        }, 5000); // 5-second cooldown period
     } else {
         // If the input is empty, show an error message or handle it accordingly
         alert('Please enter a question.');
