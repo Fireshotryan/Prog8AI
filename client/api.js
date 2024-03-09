@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:3000'; // Update with your server URL
+const baseUrl = 'http://localhost:3000';
 
 export async function getMotivated(prompt) {
     try {
@@ -9,6 +9,11 @@ export async function getMotivated(prompt) {
             },
             body: JSON.stringify({ prompt }),
         });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch data from the server.');
+        }
+
         const data = await response.json();
         return data.message;
     } catch (error) {
