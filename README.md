@@ -4,7 +4,11 @@ MotivationAI is een eenvoudige webapplicatie die motiverende antwoorden geeft op
 
 Ga naar de folder van Server en typ in terminal npm install - cd server
 
-NPM install
+NPM install - Dit zal alles installeren/downloaden, zolang je de packages in de server folder hebt.
+
+NPM run dev - dit zal de server starten
+
+Ga naar je browser en typ or kopieer http://localhost:3000/ in je url en je hebt de Motivatieai voor je.
 
 Vul uw vraag of probleem in het invoerveld in.
 Klik op de knop "Gemotiveerd raken!" knop om een ​​motiverende reactie te ontvangen.
