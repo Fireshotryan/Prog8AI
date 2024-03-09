@@ -1,8 +1,9 @@
 import express from 'express';
 import { ChatOpenAI } from "@langchain/openai";
 import path from 'path';
-import fetch from 'node-fetch'; // Importeer de fetch-module voor het ophalen van gegevens van de ZenQuotes API
+import fetch from 'node-fetch';
 import { fileURLToPath } from 'url';
+import PromptTemplate from './prompttemplate.js';
 
 // Define constants
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -17,25 +18,23 @@ const model = new ChatOpenAI({
     azureOpenAIApiDeploymentName: process.env.ENGINE_NAME,
 });
 
-// Middleware to parse JSON requests
-app.use(express.json());
+// Create an instance of the PromptTemplate class
+const promptTemplate = new PromptTemplate();
 
-// Serve static files from the client folder
+app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client')));
 
-// Handle POST requests for motivational responses
 app.post('/motivate', async (req, res) => {
     try {
         const { prompt } = req.body;
 
-        // Refine the prompt based on user input
-        let engineeredPrompt = refinePrompt(prompt);
+        // Refine the prompt using the PromptTemplate class
+        const engineeredPrompt = promptTemplate.refinePrompt(prompt);
 
-        // Log the engineered prompt for debugging
         console.log('Engineered Prompt:', engineeredPrompt);
 
-        // Check if the prompt is gibberish
-        if (isGibberish(prompt) || isGibberish(engineeredPrompt)) {
+        // Check if the prompt is gibberish using the PromptTemplate class
+        if (promptTemplate.isGibberish(prompt) || promptTemplate.isGibberish(engineeredPrompt)) {
             return res.status(400).json({ error: 'Gibberish or non-understandable input.' });
         }
 
@@ -57,39 +56,6 @@ app.post('/motivate', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
-function isGibberish(prompt) {
-    // Define your criteria for determining gibberish here
-    // You may need to adjust these conditions based on your specific requirements
-
-    // Check if the prompt contains only non-alphabetic characters
-    if (!/[a-zA-Z]/.test(prompt)) {
-        return true; // Return true if the prompt contains no alphabetic characters
-    }
-
-    // Check if the prompt consists of repeating characters or patterns
-    if (/([a-zA-Z])\1{2,}/.test(prompt)) {
-        return true; // Return true if the prompt contains repeating characters (e.g., 'aaa', '111', etc.)
-    }
-
-    // Check if the prompt is very short (e.g., less than 4 characters)
-    if (prompt.length <= 3) {
-        return true; // Return true if the prompt is very short
-    }
-
-    // Add more conditions as needed to identify gibberish prompts
-
-    // If none of the above conditions are met, return false (not gibberish)
-    return false;
-}
-
-
-// Function to refine the prompt based on user input
-function refinePrompt(prompt) {
-    // Add context or constraints to the prompt
-    // You can customize this function based on your specific requirements
-    return `Give me a motivational quote about ${prompt}`;
-}
 
 // Function to fetch inspirational quote from ZenQuotes API
 async function fetchZenQuote() {
