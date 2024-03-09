@@ -1,6 +1,7 @@
 import express from 'express';
 import { ChatOpenAI } from "@langchain/openai";
 import path from 'path';
+import fetch from 'node-fetch'; // Importeer de fetch-module voor het ophalen van gegevens van de ZenQuotes API
 import { fileURLToPath } from 'url';
 
 // Define constants
@@ -33,8 +34,15 @@ app.post('/motivate', async (req, res) => {
         // Log the engineered prompt for debugging
         console.log('Engineered Prompt:', engineeredPrompt);
 
-        // Send the engineered prompt to the AI model
-        const response = await model.invoke(engineeredPrompt);
+        // Fetch inspirational quote from ZenQuotes API
+        const quote = await fetchZenQuote();
+        console.log('Quote from ZenQuotes API:', quote);
+
+        // Combine the quote with the engineered prompt
+        let combinedPrompt = `${engineeredPrompt} ${quote}`;
+
+        // Send the combined prompt to the AI model
+        const response = await model.invoke(combinedPrompt);
         console.log('Response from AI:', response);
 
         // Send the response back to the client
@@ -50,6 +58,18 @@ function refinePrompt(prompt) {
     // Add context or constraints to the prompt
     // You can customize this function based on your specific requirements
     return `Give me a motivational quote about ${prompt}`;
+}
+
+// Function to fetch inspirational quote from ZenQuotes API
+async function fetchZenQuote() {
+    try {
+        const response = await fetch('https://zenquotes.io/api/random');
+        const data = await response.json();
+        return data[0].q;
+    } catch (error) {
+        console.error('Error fetching quote from ZenQuotes API:', error);
+        return '';
+    }
 }
 
 // Handle other GET requests by serving the HTML file
