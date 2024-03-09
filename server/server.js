@@ -38,24 +38,31 @@ app.post('/motivate', async (req, res) => {
             return res.status(400).json({ error: 'Gibberish or non-understandable input.' });
         }
 
-        // Fetch inspirational quote from ZenQuotes API
-        const quote = await fetchZenQuote();
-        console.log('Quote from ZenQuotes API:', quote);
+        // Add motivational context to the prompt to bias the AI towards motivational responses
+        const motivationalContext = ' motivational'; // Add more specific context if needed
+        const biasedPrompt = `${engineeredPrompt}${motivationalContext}`;
 
-        // Combine the quote with the engineered prompt
-        let combinedPrompt = `${engineeredPrompt} ${quote}`;
+        // Send the biased prompt to the AI model to get a motivational response
+        let message = '';
+        const useZenQuote = Math.random() < 0.15; // 15% chance to use a ZenQuote
+        if (useZenQuote) {
+            const quote = await fetchZenQuote();
+            console.log('Quote from ZenQuotes API:', quote);
+            message = quote;
+        } else {
+            const response = await model.invoke(biasedPrompt);
+            console.log('Response from AI:', response);
+            message = response.content;
+        }
 
-        // Send the combined prompt to the AI model
-        const response = await model.invoke(combinedPrompt);
-        console.log('Response from AI:', response);
-
-        // Send the response back to the client
-        res.json({ message: response.content });
+        // Send the message back to the client
+        res.json({ message });
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
 
 // Function to fetch inspirational quote from ZenQuotes API
 async function fetchZenQuote() {
