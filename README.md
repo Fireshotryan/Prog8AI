@@ -14,4 +14,4 @@ Vul uw vraag of probleem in het invoerveld in.
 Klik op de knop "Gemotiveerd raken!" knop om een ​​motiverende reactie te ontvangen.
 Het antwoord wordt weergegeven in de chatgeschiedenis.
 
-Ter informatie soms gaat die niet in een NPM run dev aan en dit komt door een experimenteel iets (watch mode) hierdoor kan het soms zijn dat de applicatie crashed en opnieuw aanmoet
+Ter informatie soms gaat die niet in een NPM run dev aan en dit komt door een experimenteel iets (watch mode) hierdoor kan het soms zijn dat de applicatie crashed en opnieuw aanmoet. Als dit gebeurt gewoon een nieuwe npm run dev doen dan zou die het moeten doen (voor mij in ieder geval)
