@@ -3,12 +3,12 @@ import { ChatOpenAI } from "@langchain/openai";
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-const __dirname = path.dirname(fileURLToPath(
-    import.meta.url));
-
+// Define constants
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Initialize the ChatOpenAI model
 const model = new ChatOpenAI({
     azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY,
     azureOpenAIApiVersion: process.env.OPENAI_API_VERSION,
@@ -16,32 +16,48 @@ const model = new ChatOpenAI({
     azureOpenAIApiDeploymentName: process.env.ENGINE_NAME,
 });
 
+// Middleware to parse JSON requests
 app.use(express.json());
 
-// Serve static files (like HTML, CSS, JS) from the client folder
+// Serve static files from the client folder
 app.use(express.static(path.join(__dirname, '../client')));
 
-// Route to handle POST requests for motivational responses
-app.post('/motivate', async(req, res) => {
+// Handle POST requests for motivational responses
+app.post('/motivate', async (req, res) => {
     try {
         const { prompt } = req.body;
 
-        // prompt engineering
-        let engineeredprompt = prompt
+        // Refine the prompt based on user input
+        let engineeredPrompt = refinePrompt(prompt);
 
-        const response = await model.invoke(prompt);
+        // Log the engineered prompt for debugging
+        console.log('Engineered Prompt:', engineeredPrompt);
+
+        // Send the engineered prompt to the AI model
+        const response = await model.invoke(engineeredPrompt);
+        console.log('Response from AI:', response);
+
+        // Send the response back to the client
         res.json({ message: response.content });
     } catch (error) {
-        console.error(error);
+        console.error('Error:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
-// For any other GET requests, serve the HTML file
+// Function to refine the prompt based on user input
+function refinePrompt(prompt) {
+    // Add context or constraints to the prompt
+    // You can customize this function based on your specific requirements
+    return `Give me a motivational quote about ${prompt}`;
+}
+
+// Handle other GET requests by serving the HTML file
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
+// Start the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
