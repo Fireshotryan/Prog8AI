@@ -9,6 +9,8 @@ import PromptTemplate from './prompttemplate.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const port = process.env.PORT || 3000;
+const hostname = '0.0.0.0'; // Allow connections from any network interface
+
 
 // Initialize the ChatOpenAI model
 const model = new ChatOpenAI({
@@ -82,6 +84,6 @@ app.get('*', (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+app.listen(port, hostname, () => {
+    console.log(`Server is running at https://didactic-umbrella-vrg94qwwrrqfpg55-3000.app.github.dev/`);
 });
