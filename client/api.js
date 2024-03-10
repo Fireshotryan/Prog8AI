@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:3000';
+const baseUrl = 'https://didactic-umbrella-vrg94qwwrrqfpg55-3000.app.github.dev'; 
 
 export async function getMotivated(prompt) {
     try {
