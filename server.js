@@ -2,11 +2,10 @@ import express from 'express';
 import { ChatOpenAI } from "@langchain/openai";
 import path from 'path';
 import fetch from 'node-fetch';
-import { fileURLToPath } from 'url';
-import PromptTemplate from './prompttemplate.js';
+import PromptTemplate from './prompttemplate.js'; // Adjust the import path
 
 // Define constants
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname = path.resolve(); // Use path.resolve() to get the root directory
 const app = express();
 const port = process.env.PORT || 80; // Update port to 80
 
@@ -30,7 +29,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../client')));
+app.use(express.static(path.join(__dirname))); // Serve static files from the root directory
 
 app.post('/motivate', async (req, res) => {
     try {
@@ -84,7 +83,7 @@ async function fetchZenQuote() {
 
 // Handle other GET requests by serving the HTML file
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/index.html'));
+    res.sendFile(path.join(__dirname, 'index.html')); // Serve the index.html file from the root directory
 });
 
 // Start the server
