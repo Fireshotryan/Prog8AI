@@ -1,5 +1,5 @@
-import { getMotivated } from './api.js';
-import ChatHistory from './chathistory.js';
+import { getMotivated } from 'api.js';
+import ChatHistory from 'chathistory.js';
 
 const promptInput = document.getElementById('prompt');
 const submitButton = document.getElementById('submit');
