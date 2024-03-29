@@ -5,7 +5,7 @@ export default class ChatHistory {
 
     addMessage(message, isUser = false) {
         const messageElement = document.createElement('div');
-        messageElement.classList.add('message', isUser ? 'user-message' : 'ai-message');
+        messageElement.classList.add('message', isUser ? 'user-message' : 'motivator-message');
         messageElement.textContent = message;
         this.chatHistoryElement.appendChild(messageElement);
         this.scrollToBottom();

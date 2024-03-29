@@ -16,13 +16,13 @@ submitButton.addEventListener('click', async () => {
         submitButton.style.display = 'none';
         loadingIndicator.style.display = 'block';
 
-        chatHistory.addMessage(`You: ${prompt}`, true); // Add user prompt to chat history
+        chatHistory.addMessage(`You: ${prompt}`, true);
 
         promptInput.value = '';
 
         try {
             const response = await getMotivated(prompt);
-            chatHistory.addMessage(`AI: ${response}`);
+            chatHistory.addMessage(`Motivator: ${response}`);
             responseElement.textContent = response;
         } catch (error) {
             console.error('Error:', error);
