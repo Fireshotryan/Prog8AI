@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:3000';
+const baseUrl = 'https://prog8ai.onrender.com';
 
 export async function getMotivated(prompt) {
     try {
