@@ -8,7 +8,7 @@ import PromptTemplate from './prompttemplate.js';
 // Define constants
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 80; // Update port to 80
 
 // Initialize the ChatOpenAI model
 const model = new ChatOpenAI({
@@ -20,6 +20,14 @@ const model = new ChatOpenAI({
 
 // Create an instance of the PromptTemplate class
 const promptTemplate = new PromptTemplate();
+
+// Ensure CORS allows requests from the new domain
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://prog8ai.onrender.com');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    next();
+});
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client')));
@@ -61,7 +69,6 @@ app.post('/motivate', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
 
 // Function to fetch inspirational quote from ZenQuotes API
 async function fetchZenQuote() {

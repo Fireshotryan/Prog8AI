@@ -1,4 +1,4 @@
-const baseUrl = 'https://prog8ai.onrender.com';
+const baseUrl = 'https://prog8ai.onrender.com'; // Update base URL
 
 export async function getMotivated(prompt) {
     try {
