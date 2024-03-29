@@ -42,18 +42,17 @@ app.post('/motivate', async (req, res) => {
         const motivationalContext = ' motivational'; // Add more specific context if needed
         const biasedPrompt = `${engineeredPrompt}${motivationalContext}`;
 
-        // Send the biased prompt to the AI model to get a motivational response
-        let message = '';
-        const useZenQuote = Math.random() < 0.15; // 15% chance to use a ZenQuote
-        if (useZenQuote) {
-            const quote = await fetchZenQuote();
-            console.log('Quote from ZenQuotes API:', quote);
-            message = quote;
-        } else {
-            const response = await model.invoke(biasedPrompt);
-            console.log('Response from AI:', response);
-            message = response.content;
-        }
+        // Send the prompt to the OpenAI model to get a motivational response
+        const response = await model.invoke(biasedPrompt);
+        console.log('Response from AI:', response);
+        const aiMessage = response.content;
+
+        // Fetch a relevant quote from ZenQuotes API based on the input prompt
+        const quote = await fetchZenQuote(prompt);
+        console.log('Quote from ZenQuotes API:', quote);
+
+        // Combine the AI message and the quote
+        const message = `${aiMessage}\n\n"${quote}"`;
 
         // Send the message back to the client
         res.json({ message });
