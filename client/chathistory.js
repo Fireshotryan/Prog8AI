@@ -26,6 +26,10 @@ export default class ChatHistory {
             imageUrls.forEach(url => {
                 const imageElement = document.createElement('img');
                 imageElement.src = url;
+                  // Set max width and height for the images
+            imageElement.style.maxWidth = '200px';
+            imageElement.style.maxHeight = '200px';
+
                 imagesContainer.appendChild(imageElement);
             });
 
