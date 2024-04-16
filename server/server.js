@@ -47,12 +47,12 @@ app.post('/motivate', async (req, res) => {
         console.log('Response from AI:', response);
         const aiMessage = response.content;
 
-        // Fetch a relevant quote from ZenQuotes API based on the input prompt
-        const quote = await fetchZenQuote(prompt);
-        console.log('Quote from ZenQuotes API:', quote);
+        // Fetch a relevant quote from thedogapi based on the input prompt
+        const dogImages = await fetchDogImages(prompt);
+        console.log('Dog images from the API:', dogImages);
 
-        // Combine the AI message and the quote
-        const message = `${aiMessage}\n\n"${quote}"`;
+        // Combine the AI message and the dog images
+        const message = `${aiMessage}\n\nDog Images: ${dogImages.join(', ')}`;
 
         // Send the message back to the client
         res.json({ message });
@@ -62,16 +62,19 @@ app.post('/motivate', async (req, res) => {
     }
 });
 
-
-// Function to fetch inspirational quote from ZenQuotes API
-async function fetchZenQuote() {
+// Function to fetch dog images from thedogapi
+async function fetchDogImages(prompt) {
     try {
-        const response = await fetch('https://zenquotes.io/api/random');
+        const response = await fetch(`https://api.thedogapi.com/v1/images/search?q=${prompt}`, {
+            headers: {
+                'x-api-key': process.env.API_KEY // Use your API key here
+            }
+        });
         const data = await response.json();
-        return data[0].q;
+        return data.map(image => image.url);
     } catch (error) {
-        console.error('Error fetching quote from ZenQuotes API:', error);
-        return '';
+        console.error('Error fetching dog images:', error);
+        return [];
     }
 }
 

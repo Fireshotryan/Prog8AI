@@ -6,7 +6,7 @@ export default class PromptTemplate {
     refinePrompt(prompt) {
         // Add context or constraints to the prompt
         // You can customize this function based on your specific requirements
-        return `Give me a motivational quote about ${prompt}`;
+        return `Give me a motivational message about ${prompt}`;
     }
 
     isGibberish(prompt) {
