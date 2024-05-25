@@ -51,16 +51,18 @@ app.post('/motivate', async (req, res) => {
         const dogImages = await fetchDogImages(prompt);
         console.log('Dog images from the API:', dogImages);
 
-        // Combine the AI message and the dog images
-        const message = `${aiMessage}\n\nDog Images: ${dogImages.join(', ')}`;
+        // Construct the latest response object
+        const latestResponse = { content: aiMessage }; // Adjust as needed
 
-        // Send the message back to the client
-        res.json({ message });
+        // Send the AI message, the dog images, and the latest response back to the client
+        res.json({ aiMessage: aiMessage, dogImages: dogImages, latestResponse: latestResponse });
+
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
 
 // Function to fetch dog images from thedogapi
 async function fetchDogImages(prompt) {

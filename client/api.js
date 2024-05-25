@@ -15,7 +15,8 @@ export async function getMotivated(prompt) {
         }
 
         const data = await response.json();
-        return data.message;
+        console.log('Response from server:', data); // Add this line to log the response
+        return data;
     } catch (error) {
         console.error('Error:', error);
         return 'Failed to get motivation. Please try again later.';
