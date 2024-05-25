@@ -42,14 +42,21 @@ app.post('/motivate', async (req, res) => {
         const motivationalContext = ' motivational'; // Add more specific context if needed
         const biasedPrompt = `${engineeredPrompt}${motivationalContext}`;
 
-        // Send the prompt to the OpenAI model to get a motivational response
-        const response = await model.invoke(biasedPrompt);
-        console.log('Response from AI:', response);
-        const aiMessage = response.content;
-
         // Fetch a relevant quote from thedogapi based on the input prompt
         const dogImages = await fetchDogImages(prompt);
         console.log('Dog images from the API:', dogImages);
+
+        // Let's compose a message combining AI response and dog images
+        let composedMessage = biasedPrompt; // Start with the biased prompt
+        if (dogImages.length > 0) {
+            // Add a fun message when dog images are available
+            composedMessage += "\n\nHere's a happy dog to cheer you up!";
+        }
+
+        // Send the composed message to the OpenAI model to get a response
+        const response = await model.invoke(composedMessage);
+        console.log('Response from AI:', response);
+        const aiMessage = response.content;
 
         // Construct the latest response object
         const latestResponse = { content: aiMessage }; // Adjust as needed
@@ -62,6 +69,8 @@ app.post('/motivate', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
 
 
 // Function to fetch dog images from thedogapi
